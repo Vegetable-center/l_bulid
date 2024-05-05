@@ -1,0 +1,25 @@
+编辑器数据的初步实现：
+1.将编辑器中的json数据存放在store仓库中。
+2.在Pinia的store中设置更新数据的方法，方便各个组件修改更新数据。
+3.直接在各个子组件使用Pinia中的数据（左侧组件库使用render数据渲染，编辑器内容也使用render渲染）
+4.左侧组件库拖拽组件过去编辑器内容中，就将数据更新添加到Pinia的Store中，编辑器内容组件使用响应式Store，当数据发生变化，就重新渲染编辑器内容组件
+
+组件选中拖拽的实现：
+1.
+
+
+
+注册页面中的键盘快捷键事件
+1.ctrl+z:撤回的实现：
+
+
+
+
+
+
+pinia 没有激活
+遇到的一个bug：pinia.mjs:1699 Uncaught Error: [🍍]: "getActivePinia()" was called but there was no active Pinia. Did you forget to install pinia?
+pinia需要在vue3的setup里面声明，如果直接引用，这个时候pinia并没有加载完成，修改Nav.vue文件,将const userStore = useUserStore()放入setup里。
+
+VNode 虚拟节点没有创建
+当数据为空的时候，创建一个虚拟节点会报一个警告invalid VNode type: undefined (undefined),此时加一个非空判定就可以了。还有一种情况就是，在使用txs的时候return的出来没有一个<></>包裹要渲染的内容
