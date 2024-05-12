@@ -5,6 +5,7 @@ sass:引用scss文件需要的一个预处理依赖
 pinia：使用pinia状态管理器
 @vitejs/plugin-vue：解析tsx文件需要一个包，如果不做这个处理，控制台会出现"React is not defined"报错
 unplugin-vue-components和unplugin-auto-import:这两个包是为了自动按需引入element-plus组件库中的组件
+deepcopy:为了深拷贝组件元素
 
 #### 2. ts需要的配置
 "jsx": "preserve",这个配置项是为了让编译器可以编译tsx文件
@@ -18,11 +19,14 @@ vueJsx()是为了解决控制台会出现"React is not defined"报错的相应�
 AutoImport和Component的配置是为了可以自动按需导入element-plus组件库
 ##### 2.2 declare文件夹中的element声明
 该文件是解决按需导入对应组件的编译器报错问题，每次导入一个组件都需要在这个文件中进行一个声明
+##### 2.3 vue-shims.d.ts 文件的说明
+该文件为了解决typescript 不能识别 .vue 文件 的问题
 
 #### 3. data.json文件
 container：是编辑器内容区的一个高度
 blocks：是编辑器左侧组件库中的组件键值名，左侧组件库的渲染依靠该数据。
 containerBlocks：是编辑器内容区要渲染的组件的值，内容区组件的渲染依靠该数据。
+lastfocus:是点击后聚焦的最后一个点击元素，获取右侧操作台内容依靠该值。
 
 
 #### 4. components组件

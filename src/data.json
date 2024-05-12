@@ -6,5 +6,6 @@
         {"key":"text"},
         {"key":"button"}
     ],
-    "containerBlocks":[]
+    "containerBlocks":[],
+    "lastfocus":{}
 }

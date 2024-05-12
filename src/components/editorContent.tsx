@@ -1,4 +1,4 @@
-import { computed, defineComponent,} from "vue";
+import { computed, defineComponent} from "vue";
 import '../declare/declare';
 import '../style/editorContent.scss';
 import { userData , containerData} from "../stores";
@@ -33,6 +33,8 @@ export default defineComponent({
         // 实现清空页面选中元素的函数
         const clear =() => {
             useContainer.clearFocus();
+            useStore.changeLastFocus({})
+
         }
 
         //计算组件在编辑器中的位置的函数
@@ -57,19 +59,19 @@ export default defineComponent({
             top=number?.top;
             if(e.shiftKey){
                 block.focus=!block.focus;
-                console.log(focusComponent.value.focus)
+                useStore.changeLastFocus(block)
             }
             else {
                 if(!block.focus){
                     clear();
                     block.focus=true;
+                    useStore.changeLastFocus(block)
                     Edcontainer?.addEventListener('mousemove',location)
                     Edcontainer?.addEventListener('mouseup',()=> {
                         Edcontainer.removeEventListener('mousemove',location)
                     })
                 }
                 else {
-                    // block.focus=false;
                     Edcontainer?.addEventListener('mousemove',location)
                     Edcontainer?.addEventListener('mouseup',()=> {
                         Edcontainer.removeEventListener('mousemove',location)
@@ -83,14 +85,16 @@ export default defineComponent({
                 <div class="editorCanva">
                     <div class="editorContainer" style={containerStyle.value} onMousedown={clear}>
                         {
-                            (containerBlocks.value.map(block => {
-                                const component=config.componentMap[(block as {key:string}).key];
-                                const renderComponet=component.render();
-                                // console.log((block as {top:Number}).top)
-                                // console.log((block as {left:Number}).left)
+                            (containerBlocks.value.map((block:block) => {
+                                const component=config.componentMap[block.key];
+                                const renderComponet=component.render({
+                                    size:block.hasResize?{width:block.width,height:block.height}:{},
+                                    model:{default:'绑定'},
+                                    props:(block as {props:Object}).props
+                                });
                                 return <div
-                                    style={{position:"absolute",top:(block as {top:Number}).top+'px',left:(block as {left:Number}).left+'px'}}
-                                    class={(block as {focus:boolean}).focus?'componentDisplay':''}
+                                    style={{position:"absolute",top:block.top+'px',left:block.left+'px'}}
+                                    class={block.focus?'componentDisplay':''}
                                     onMousedown={(e:MouseEvent) => componentMousedown(e,block)}
                                  >
                                     {renderComponet}
