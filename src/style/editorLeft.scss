@@ -24,15 +24,36 @@
     bottom: 0;
     width: 20px;
     height: 35px;
+    cursor: pointer;
 }   
 .icon-shuangjiantou {
     transition: all .8s;
     font-size: 20px;
 }
+.titleBlock {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 35px;
+    border: 1px solid #cecece;
+    cursor: pointer;
+    >i {
+        margin-left: 15px;
+    }
+    >div {
+        margin-left: 15px;
+    }
+}
+.comMoveBox {
+    transition: all .5s;
+    overflow: hidden;
+}
 .blocksBox {
+    transition: all .5s;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 1px solid #cecece;
     >div{
         display: flex;
         align-items: center;
@@ -52,10 +73,15 @@
         }
     }
 }
-
 //元素漂浮的样式
 .flutter {
     position: absolute;
     z-index: 999;
+    pointer-events: none;
+}
+
+//按钮的旋转样式
+.rotateBox {
+    transition: all .5s;
     pointer-events: none;
 }

@@ -9,5 +9,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     EditorAll: typeof import('./src/components/editorAll.vue')['default']
     EditorContent: typeof import('./src/components/editorContent.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
+    Test: typeof import('./src/components/test.vue')['default']
   }
 }

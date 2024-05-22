@@ -1,16 +1,21 @@
 <template>
-  <EditorAll v-model="stateData"></EditorAll>
+  <router-view></router-view>
 </template>
 
 <script lang="ts">
 import data from './data.json'
 import { ref } from '@vue/reactivity'
 //导入组件 编辑器 editor
-import EditorAll from './components/editorAll.vue'
+import EditorAll from './view/editorAll.vue';
+import PreviewPage from './view/previewPage.vue';
+// import Test from './components/test.vue'
+
 export default {
     //注册组件
     components:{
         EditorAll,
+        // Test,
+        PreviewPage
     },
     setup(){
       const stateData=ref<Object>(data)
@@ -26,7 +31,6 @@ export default {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #eceef2;
   }
   #app {
     width: 100%;

@@ -9,6 +9,19 @@ declare namespace JSX {
     }
 }
 
+//这是命令组件中的命令类
+type Command = {
+    name: string;
+    keyboard?:string;
+    pushQueue:boolean;
+    init?: () => void;
+    execute: () => {
+        doFn?: () => void;
+        backWard?:() => void;
+        advance?:() =>void;
+    };
+};
+
 //这是对组件对象配置的一个声明
 type Component = {
     label: string;
@@ -27,7 +40,11 @@ declare module 'block' {
     export default block;
 }
 
-
+declare module '*.vue' {
+    import { ComponentOptions } from 'vue'
+    const componentOptions: ComponentOptions
+    export default componentOptions
+  }
 
 
 
