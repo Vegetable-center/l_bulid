@@ -1,5 +1,5 @@
 <template>
-    <ElForm label-width="auto" :style="{height:size.height+'px',width:size.width+'px'}">
+    <ElForm label-width="auto" :style="{...styleContent}">
         <el-form-item label="用户名" prop="name">
                   <el-input/>
                 </el-form-item>
@@ -13,20 +13,18 @@
 </template>
   
 <script lang="ts">
-import { ElForm, ElFormItem, ElInput } from "element-plus";
+import { PropType } from 'vue';
+
 
 export default {
     props:{
-        size:{
-            type:Object as ()=>{width:number,height:number},
-            required:true,
+        styleContent:{
+          type:Object as PropType<StyleContent>,
+          required:true,
+          default:()=>{}
         }
+
     },
-    components:{
-        ElForm,
-        ElFormItem,
-        ElInput
-    }
 }
 </script>
     

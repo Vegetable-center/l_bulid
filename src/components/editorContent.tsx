@@ -6,10 +6,12 @@ import { registerConfig as config } from "./blocksConfig";
 import { storeToRefs } from "pinia";
 
 export default defineComponent({
-    components:{
-        ElButton,
+    props:{
+        formData:{
+            type:Object
+        }
     },
-    setup(){
+    setup(props){
         const useStore=userData();
         const useContainer=containerData();
         const {container} =useStore
@@ -87,10 +89,25 @@ export default defineComponent({
                         {
                             (containerBlocks.value.map((block:block) => {
                                 const component=config.componentMap[block.key];
+                                console.log("imggg:"+JSON.stringify((block as {props:Object}).props));
+                                
                                 const renderComponet=component.render({
-                                    size:block.hasResize?{width:block.width,height:block.height}:{},
-                                    model:{default:'绑定'},
-                                    props:(block as {props:Object}).props
+                                    props:(block as {props:Object}).props,
+                                    model:Object.keys(block.model||{}).reduce((prev,modelName)=>{
+                                        console.log(modelName);
+                                        console.log("prev:"+JSON.stringify(prev));
+                                        
+                                        let propName=block.model[modelName]  //"username"
+                                        prev[modelName]={
+                                            modelValue:props.formData?.[propName],
+                                            "update:modelValue":(v:string)=>{
+                                                if(props.formData)
+                                                    {props.formData[propName]=v}
+                                            }
+                                        }
+                                        return prev;
+                                    },{} as { [key: string]: { modelValue: any; "update:modelValue": (v: any) => void } }),
+                                    styleContent:block.styleContent!,
                                 });
                                 return <div
                                     style={{position:"absolute",top:block.top+'px',left:block.left+'px'}}

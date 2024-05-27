@@ -1,7 +1,22 @@
+.right{
+    padding: 15px;
+}
 .rightTitle {
-    margin-top: 10px;
-    margin-left: 10px;
     font-size: 20px;
     font-weight: 700;
     font-family: '宋体';
+}
+.demo-tabs > .el-tabs__content {
+    padding: 32px;
+    color: #6b778c;
+    font-size: 32px;
+    font-weight: 600;
+  }
+.el-form-item{
+    display: flex;
+    align-items: center;
+}
+.demo-tabs > .el-tabs__content {
+    padding: 0px;
+    font-weight: 400;
 }

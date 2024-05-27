@@ -1,6 +1,8 @@
 {
     "container":{
-        "height":2000
+        "height":2000,
+        "props":{},
+        "styleContent":{}
     },
     "blocks":[
         {"key":"text"},

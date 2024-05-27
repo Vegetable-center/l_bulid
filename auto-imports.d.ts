@@ -6,4 +6,10 @@
 export {}
 declare global {
   const ElButton: typeof import('element-plus/es')['ElButton']
+  const ElCard: typeof import('element-plus/es')['ElCard']
+  const ElCarousel: typeof import('element-plus/es')['ElCarousel']
+  const ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
+  const ElMenu: typeof import('element-plus/es')['ElMenu']
+  const ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+  const ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
 }

@@ -82,8 +82,6 @@ export default defineComponent({
 
                 const left = cloneEl.clientWidth / 2;
                 const top = cloneEl.clientHeight * 2;
-                console.log("鼠标到右边界的距离是：" + e.clientX)
-                console.log("此时元素自身的宽度是：" + cloneEl.clientWidth)
                 cloneEl.style.left = `${e.clientX - left}px`;
                 cloneEl.style.top = `${e.clientY - top}px`;
             }
@@ -110,7 +108,8 @@ export default defineComponent({
                     top: top,
                     left: left,
                     props:{},
-                    model:{}
+                    model:{},
+                    styleContent:{}
                 }
                 container.addData(newData);
                 dragging = false;

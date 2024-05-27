@@ -8,23 +8,26 @@ declare namespace JSX {
         i:any;
     }
 }
-type Size={  //改变组件大小
-    width?:number,
-    height?:number
-}
 type Model={
     [modelName:string]:string
 }
 type Props={}
+interface StyleContent{
+    display?: string,
+    marginTop?:number,
+    marginRight?:number,
+    marginBottom?:number,
+    marginLeft?:number,
+    paddingTop?:number,
+    paddingRight?:number,
+    paddingBottom?:number,
+    paddingLeft?:number,
+}
 //这是对组件对象配置的一个声明
 type Component = {
     label: string;
-    resize?:{
-        width?:boolean,
-        height?:boolean,
-    }
     preview: () => JSX.IntrinsicElements;
-    render: ({model,size,props}:{model?:Model,size?:Size,props:Props}) => JSX.IntrinsicElements;
+    render: ({model,props,styleContent}:{model?:any,props:Props,styleContent:StyleContent}) => JSX.IntrinsicElements;
     key: string;
     model?:Model,
     props?:Props
@@ -32,13 +35,14 @@ type Component = {
 //左侧组件库中的组件对象的声明
 type block = {
     key: string,
-    hasResize?:boolean,
     width?:number,
     height?:number,
     focus?:boolean,
     top?:number,
     left?:number,
-    props?:Props
+    props?:Props,
+    model?:any,
+    styleContent?:StyleContent
 };
 declare module 'blockComponet' {
     export default Component;

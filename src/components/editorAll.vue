@@ -3,7 +3,7 @@
     <div class="editor">
         <EditorLeft class="left"></EditorLeft>
         <EditorRight class="right"></EditorRight>
-        <EditorContent class="content"></EditorContent>
+        <EditorContent class="content" :formData="formData"></EditorContent>
     </div>
 </template>
   
@@ -12,12 +12,23 @@
     import EditorRight from './editorRight'
     import EditorTop from './editorTop'
     import EditorContent from './editorContent'
+import { reactive } from 'vue'
     export default {
         props:{
             modelValue:{
                 type:Object,
                 require:true,
             }
+        },
+        setup(props, ctx) {
+          const formData=reactive({
+            username:'张三',
+          })
+
+          return{
+            formData
+          }
+        
         },
         components:{
             EditorLeft,
@@ -62,12 +73,27 @@
     border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
     background-color: white;
+    overflow-y: scroll;
   }
-  .content {
-    height: 99%;
-    margin-left: 18%;
-    margin-right: 18%;
-    padding-top: 1%;
-  }
+.right::-webkit-scrollbar {
+  width: 6px;
+}
+.right::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 2px;
+}
+.right::-webkit-scrollbar-thumb {
+  background: #a4a4a649;
+  border-radius: 10px;
+}
+.right::-webkit-scrollbar-thumb:hover {
+  background: #56565749;
+}
+.content {
+  height: 99%;
+  margin-left: 18%;
+  margin-right: 18%;
+  padding-top: 1%;
+}
 </style>
   
