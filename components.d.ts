@@ -12,14 +12,5 @@ declare module 'vue' {
     DForm: typeof import('./src/components/DForm.vue')['default']
     DMenu: typeof import('./src/components/DMenu.vue')['default']
     EditorAll: typeof import('./src/components/editorAll.vue')['default']
-    ElButton: typeof import('element-plus/es')['ElButton']
-    ElCard: typeof import('element-plus/es')['ElCard']
-    ElCarousel: typeof import('element-plus/es')['ElCarousel']
-    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
-    ElForm: typeof import('element-plus/es')['ElForm']
-    ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElInput: typeof import('element-plus/es')['ElInput']
-    ElMenu: typeof import('element-plus/es')['ElMenu']
-    ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
   }
 }
