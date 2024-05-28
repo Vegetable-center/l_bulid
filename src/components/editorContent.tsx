@@ -178,6 +178,8 @@ export default defineComponent({
             const test=(e.target as HTMLElement).parentElement!;
             clearline(test);
         }
+
+        //左侧组件库中拖拽到已有组件上可以随意插入
         const dragover= (e:DragEvent) => {
             if(flag=="inDrag"){
                 e.preventDefault();
@@ -202,7 +204,7 @@ export default defineComponent({
             // 将拖拽完成之后的编辑器的组件列表发送到Command文件中，方便前进操作
             emit.emit('update',newList);
             //编辑器中的组件拖拽松手，更新数据，重新渲染页面
-            useContainer.update(newList);
+            newList&&useContainer.update(newList);
             // 只有当页面开始重新渲染的时候，才可以替换原来的index
             dragIndex=numIndex;
             (e.target as HTMLElement).style.opacity='1';
