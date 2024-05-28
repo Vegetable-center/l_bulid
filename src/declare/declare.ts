@@ -8,6 +8,21 @@ declare namespace JSX {
         i:any;
     }
 }
+type Model={
+    [modelName:string]:string
+}
+type Props={}
+interface StyleContent{
+    display?: string,
+    marginTop?:number,
+    marginRight?:number,
+    marginBottom?:number,
+    marginLeft?:number,
+    paddingTop?:number,
+    paddingRight?:number,
+    paddingBottom?:number,
+    paddingLeft?:number,
+}
 
 //这是命令组件中的命令类
 type Command = {
@@ -25,13 +40,26 @@ type Command = {
 //这是对组件对象配置的一个声明
 type Component = {
     label: string;
+    componentType:string,
     preview: () => JSX.IntrinsicElements;
-    render: () => JSX.IntrinsicElements;
+    render: ({model,props,styleContent}:{model?:any,props:Props,styleContent:StyleContent}) => JSX.IntrinsicElements;
     key: string;
+    model?:Model,
+    props?:Props
 };
 //左侧组件库中的组件对象的声明
 type block = {
-    key: string;
+    key: string,
+    width?:number,
+    height?:number,
+    focus?:boolean,
+    top?:number,
+    left?:number,
+    props?:Props,
+    model?:any,
+    display?:boolean,
+    index?:number,
+    styleContent?:StyleContent
 };
 declare module 'blockComponet' {
     export default Component;

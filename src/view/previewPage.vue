@@ -2,15 +2,26 @@
     <div class="operate">
         <div class="previewbt" @click="back">返回</div>
     </div>
-    <previewContent></previewContent>
+    <previewContent :formData="formData"></previewContent>
 </template>
 
 <script lang="ts">
+import { reactive } from 'vue';
 import previewContent from '../components/previewContent';
 
-export default{
+export default {
     components:{
         previewContent,
+    },
+    setup(props, ctx) {
+        const formData=reactive({
+          username:'张三',
+        })
+
+        return{
+          formData
+        }
+    
     },
     methods:{
         back(){

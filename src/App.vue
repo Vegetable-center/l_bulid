@@ -35,5 +35,20 @@ export default {
   #app {
     width: 100%;
     height: 100vh;
+    overflow-y: scroll;
+  }
+  #app::-webkit-scrollbar {
+  width: 6px;
+  }
+  #app::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 2px;
+  }
+  #app::-webkit-scrollbar-thumb {
+    background: #a4a4a649;
+    border-radius: 10px;
+  }
+  #app::-webkit-scrollbar-thumb:hover {
+    background: #56565749;
   }
 </style>

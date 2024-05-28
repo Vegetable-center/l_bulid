@@ -1,3 +1,6 @@
+.smBox *{
+    pointer-events: none;
+}
 .moveBox {
     position: relative;
 }
@@ -58,6 +61,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
         width: 90%;
         height: 100px;
         margin-top: 4px;
@@ -72,6 +76,16 @@
             cursor:grabbing;
         }
     }
+}
+.blocksBox::-webkit-scrollbar {
+    width: 4px;
+}
+.blocksBox::-webkit-scrollbar-thumb {
+    background-color: rgba(191, 192, 194, 0.9725490196);
+    border-radius: 3px;
+}
+.blocksBox::-webkit-scrollbar-track {
+    background-color: white;
 }
 //元素漂浮的样式
 .flutter {

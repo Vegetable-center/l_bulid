@@ -1,4 +1,4 @@
-import { computed, defineComponent,} from "vue";
+import { computed, defineComponent} from "vue";
 import '../declare/declare';
 import emit from '../declare/Event'
 import '../style/editorContent.scss';
@@ -8,10 +8,12 @@ import { storeToRefs } from "pinia";
 import { cloneDeep } from "lodash";
 
 export default defineComponent({
-    components:{
-        ElButton,
+    props:{
+        formData:{
+            type:Object
+        }
     },
-    setup(){
+    setup(props){
         const useStore=userData();
         const useContainer=containerData();
         const {container} =useStore
@@ -23,6 +25,7 @@ export default defineComponent({
         let display:boolean|null=null;
         emit.on('addComponent',(message) => {
             id=message.id;
+
             if(message.display=='true'){
                 display=true;
             }
@@ -63,6 +66,8 @@ export default defineComponent({
         // 实现清空页面选中元素的函数
         const clear =() => {
             useContainer.clearFocus();
+            useStore.changeLastFocus({})
+
         }
         // 实现选中组件的函数
         const componentMousedown =(e:MouseEvent,block:any) => {
@@ -70,12 +75,14 @@ export default defineComponent({
             e.stopPropagation();
             if(e.shiftKey){
                 block.focus=!block.focus;
-                console.log(focusComponent.value.focus)
+                useStore.changeLastFocus(block)
             }
             else {
                 if(!block.focus){
                     clear();
                     block.focus=true;
+                    useStore.changeLastFocus(block)
+                    
                 }
                 else {
                     block.focus=false;
@@ -217,6 +224,8 @@ export default defineComponent({
         const drop= (e:DragEvent) => {
             // 判断的flag是最上面接收到的flag
             if(flag!='inDrag'){
+                console.log("drop:"+id);
+                
                 //此时组件拖拽完成，给pinia仓库中添加一条新的数据
                 useContainer.addData({
                     //标记组件是否被选中
@@ -227,6 +236,10 @@ export default defineComponent({
                     display:display,
                     //标记组件是编辑器中第几个组件
                     index:index,
+                    id:new Date().getTime(),  //时间戳id 方便获取元素
+                    props:{},
+                    model:{},
+                    styleContent:{}
                 })
                 //更新此时编辑器中有多少个组件,0即为1个
                 index++;
@@ -240,9 +253,29 @@ export default defineComponent({
                 <div class="editorCanva">
                     <div class="editorContainer" style={containerStyle.value} onMousedown={clear} onDrop={drop}>
                         {
-                            (containerBlocks.value.map(block => {
-                                const component=config.componentMap[(block as {key:string}).key];
-                                const renderComponet=component.render();
+                            (containerBlocks.value.map((block:block) => {
+                                const component=config.componentMap[block.key];
+                                console.log("imggg:"+JSON.stringify((block as {props:Object}).props));
+                                console.log(block.key);
+                                
+                                const renderComponet=component.render({
+                                    props:(block as {props:Object}).props,
+                                    model:Object.keys(block.model||{}).reduce((prev,modelName)=>{
+                                        console.log(modelName);
+                                        console.log("prev:"+JSON.stringify(prev));
+                                        
+                                        let propName=block.model[modelName]  //"username"
+                                        prev[modelName]={
+                                            modelValue:props.formData?.[propName],
+                                            "update:modelValue":(v:string)=>{
+                                                if(props.formData)
+                                                    {props.formData[propName]=v}
+                                            }
+                                        }
+                                        return prev;
+                                    },{} as { [key: string]: { modelValue: any; "update:modelValue": (v: any) => void } }),
+                                    styleContent:block.styleContent!,
+                                });
                                 const classMo=['comBox'];
                                 if((block as {focus:boolean}).focus){
                                     classMo.push('componentDisplay');

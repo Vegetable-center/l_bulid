@@ -4,7 +4,7 @@
       <div class="editor">
           <EditorLeft class="left"></EditorLeft>
           <EditorRight class="right"></EditorRight>
-          <EditorContent class="content"></EditorContent>
+          <EditorContent class="content" :formData="formData"></EditorContent>
       </div>
     </div>
 </template>
@@ -14,12 +14,23 @@
     import EditorRight from '../components/editorRight'
     import EditorTop from '../components/editorTop'
     import EditorContent from '../components/editorContent'
+    import { reactive } from 'vue'
     export default {
         props:{
             modelValue:{
                 type:Object,
                 require:true,
             }
+        },
+        setup(props, ctx) {
+          const formData=reactive({
+            username:'张三',
+          })
+
+          return{
+            formData
+          }
+        
         },
         components:{
             EditorLeft,
@@ -70,19 +81,34 @@
     border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
     background-color: white;
+    overflow-y: scroll;
   }
-  .content {
-    height: 99%;
-    margin-left: 18%;
-    margin-right: 18%;
-    padding-top: 1%;
-  }
-  /* 页面中容器组件的样式 */
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #7d7d7d4e;
-  }
+.right::-webkit-scrollbar {
+  width: 6px;
+}
+.right::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 2px;
+}
+.right::-webkit-scrollbar-thumb {
+  background: #a4a4a649;
+  border-radius: 10px;
+}
+.right::-webkit-scrollbar-thumb:hover {
+  background: #56565749;
+}
+.content {
+  height: 99%;
+  margin-left: 18%;
+  margin-right: 18%;
+  padding-top: 1%;
+}
+/* 页面中容器组件的样式 */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #7d7d7d4e;
+}
 </style>
   

@@ -1,6 +1,8 @@
 {
     "container":{
-        "height":2000
+        "height":2000,
+        "props":{},
+        "styleContent":{}
     },
     "smallBlocks":[
         {"key":"text","display":"inline"},
@@ -9,5 +11,6 @@
     "bigBlocks":[
         {"key":"container","display":"block"}
     ],
-    "containerBlocks":[]
+    "containerBlocks":[],
+    "lastfocus":{}
 }

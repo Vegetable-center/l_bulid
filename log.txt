@@ -16,7 +16,11 @@
 1.ctrl+z:撤回的实现：
 关于前进后退的指令存储，将拖拽设置成一个指令，每一次拖拽的时候就记录该次拖拽的初状态和末状态，将该指令做成两个函数存放到一个数组中，需要的时候调用对应的数组（通过current指针实现）。
 
-
+右侧操作台blockOperate绑定数据：
+1.通过获取store仓库的最后一个点击聚焦元素lastfocus，获取需要的props属性或者model属性渲染
+2.通过props属性的type类型渲染操作台，并将用户输入的属性值写入editData对象中
+3.apply应用时，调用store仓库的changeData方法，将包含props属性值和model属性值的editData传过去
+4.store仓库改变组件的值
 
 
 
