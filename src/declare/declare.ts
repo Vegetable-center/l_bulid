@@ -23,9 +23,24 @@ interface StyleContent{
     paddingBottom?:number,
     paddingLeft?:number,
 }
+
+//这是命令组件中的命令类
+type Command = {
+    name: string;
+    keyboard?:string;
+    pushQueue:boolean;
+    init?: () => void;
+    execute: () => {
+        doFn?: () => void;
+        backWard?:() => void;
+        advance?:() =>void;
+    };
+};
+
 //这是对组件对象配置的一个声明
 type Component = {
     label: string;
+    componentType:string,
     preview: () => JSX.IntrinsicElements;
     render: ({model,props,styleContent}:{model?:any,props:Props,styleContent:StyleContent}) => JSX.IntrinsicElements;
     key: string;
@@ -42,6 +57,8 @@ type block = {
     left?:number,
     props?:Props,
     model?:any,
+    display?:boolean,
+    index?:number,
     styleContent?:StyleContent
 };
 declare module 'blockComponet' {
@@ -51,7 +68,11 @@ declare module 'block' {
     export default block;
 }
 
-
+declare module '*.vue' {
+    import { ComponentOptions } from 'vue'
+    const componentOptions: ComponentOptions
+    export default componentOptions
+  }
 
 
 

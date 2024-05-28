@@ -1,18 +1,20 @@
 <template>
-    <EditorTop class="nav">这个部分是大的导航栏</EditorTop>
-    <div class="editor">
-        <EditorLeft class="left"></EditorLeft>
-        <EditorRight class="right"></EditorRight>
-        <EditorContent class="content" :formData="formData"></EditorContent>
+    <div class="background">
+      <EditorTop class="nav">这个部分是大的导航栏</EditorTop>
+      <div class="editor">
+          <EditorLeft class="left"></EditorLeft>
+          <EditorRight class="right"></EditorRight>
+          <EditorContent class="content" :formData="formData"></EditorContent>
+      </div>
     </div>
 </template>
   
 <script lang="ts">
-    import EditorLeft from './editorLeft'
-    import EditorRight from './editorRight'
-    import EditorTop from './editorTop'
-    import EditorContent from './editorContent'
-import { reactive } from 'vue'
+    import EditorLeft from '../components/editorLeft'
+    import EditorRight from '../components/editorRight'
+    import EditorTop from '../components/editorTop'
+    import EditorContent from '../components/editorContent'
+    import { reactive } from 'vue'
     export default {
         props:{
             modelValue:{
@@ -40,6 +42,11 @@ import { reactive } from 'vue'
 </script>
     
 <style>
+  .background {
+    height: 100%;
+    background-color: #eceef2;
+    overflow: hidden;
+  }
   .nav {
     width: 100%;
     height: 6%;
@@ -63,6 +70,7 @@ import { reactive } from 'vue'
     background-color: white;
   }
   .right {
+    transition: all 1s;
     position: absolute;
     right:0;
     top:5px;
@@ -94,6 +102,13 @@ import { reactive } from 'vue'
   margin-left: 18%;
   margin-right: 18%;
   padding-top: 1%;
+}
+/* 页面中容器组件的样式 */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #7d7d7d4e;
 }
 </style>
   

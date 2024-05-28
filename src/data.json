@@ -4,9 +4,12 @@
         "props":{},
         "styleContent":{}
     },
-    "blocks":[
-        {"key":"text"},
-        {"key":"button"}
+    "smallBlocks":[
+        {"key":"text","display":"inline"},
+        {"key":"button","display":"inline"}
+    ],
+    "bigBlocks":[
+        {"key":"container","display":"block"}
     ],
     "containerBlocks":[],
     "lastfocus":{}

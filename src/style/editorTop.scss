@@ -11,3 +11,22 @@
     font-weight: 700;
     font-family: '宋体';
 }
+.topButton {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: 10%;
+}
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50%;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 15%;
+    border: 2px solid #5b5050;
+    cursor: pointer;
+    user-select: none;
+}
