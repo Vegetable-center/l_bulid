@@ -135,6 +135,7 @@ export function useCommand() {
                     const right=document.querySelector('.right');
                     (left as HTMLElement).style.left='-15%';
                     (right as HTMLElement).style.right='-15%';
+                    // 通过事件发射器发送到容器组件，做预览页面预选框的出现和消失
                     emit.emit('preview','preview')
                     setTimeout(() => {
                         router.push('/preview')

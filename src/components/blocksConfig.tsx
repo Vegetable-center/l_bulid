@@ -88,7 +88,7 @@ registerConfig.register({
     render: ({ model,styleContent}) => <ElInput id="input" placeholder="渲染输入框" {...model.default} style={{...styleContent}}></ElInput>,
     key: 'input',
     display:false,
-    model: {  //{default:'username'}
+    model: {
         default: '绑定字段'
     }
 })

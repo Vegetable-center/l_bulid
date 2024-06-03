@@ -228,8 +228,6 @@ export default defineComponent({
         const drop= (e:DragEvent) => {
             // 判断的flag是最上面接收到的flag
             if(flag!='inDrag'){
-                // console.log("此时在哪一个元素中松手：");
-                // console.log((e.target as HTMLElement));
                 // 进入到容器组件中，该组件添加到容器组件中去
                 if((e.target as HTMLElement).getAttribute('id')=='container'&&(e.target as HTMLElement).parentElement!.classList.contains('componentDisplay')){
                     const newData={
@@ -242,7 +240,6 @@ export default defineComponent({
                         styleContent:{},
                         son:[]
                     }
-                    // console.log(e.target)
                     useStore.addSon(newData);
                 }
                 else {

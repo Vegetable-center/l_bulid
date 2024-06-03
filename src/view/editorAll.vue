@@ -22,7 +22,7 @@
                 require:true,
             }
         },
-        setup(props, ctx) {
+        setup() {
           const formData=reactive({
             username:'张三',
           })

@@ -40,8 +40,8 @@ export default defineComponent({
         // 当页面点击应用的时候就更新一次组件数据
         // 传入的是最后一次选中的组件的id和修改的组件对象
         const apply = () => {
-            // console.log(lastfocus.value)
-            // console.log(state.editData)
+            console.log(lastfocus.value)
+            console.log(state.editData)
             changeData((lastfocus.value as { id: string }).id, state.editData)
         }
 

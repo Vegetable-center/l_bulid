@@ -26,7 +26,7 @@ export default defineComponent({
                             console.log(modelName);
                             console.log("prev:"+JSON.stringify(prev));
                             
-                            let propName=block.model[modelName]  //"username"
+                            let propName=block.model[modelName]
                             prev[modelName]={
                                 modelValue:props.formData?.[propName],
                                 "update:modelValue":(v:string)=>{

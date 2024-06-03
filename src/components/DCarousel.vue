@@ -27,12 +27,10 @@ export default {
     },
     setup(props){
         const arr=computed(()=>props.num.length?props.num:[1, 2])
-        // const width=500;
         const height=200;
         const NoPic=computed(()=>!props.num.length);
         return{
             arr,
-            // width,
             height,
             NoPic
         }

@@ -70,7 +70,6 @@ export default defineComponent({
         })
 
         const dragstart =(e:DragEvent) =>{
-            // console.log(e.target);
             //获取拖拽元素的id，将id通过事件发射器发送到editorContent文件中，进行组件添加
             const id = (e.target as HTMLElement).getAttribute('id');
             const display = (e.target as HTMLElement).getAttribute('display');

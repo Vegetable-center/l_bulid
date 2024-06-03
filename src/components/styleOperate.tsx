@@ -21,7 +21,7 @@ export default defineComponent({
                 styleContent:{} as StyleContent
             },
         })
-        // 页面中最后选中组件的值发送变化执行的函数
+        
         const reset=()=>{
             // 如果页面中没有选中组件，
             if (!lastfocus.value && container.value.styleContent) {
@@ -34,10 +34,9 @@ export default defineComponent({
                 state.styleData.styleContent = {} as StyleContent
             }
         }
-        // 这条watch监控的是页面中最后选中的组件的值
+
         watch(() =>lastfocus.value, reset, { immediate: true})
 
-        // 这条watch监控的是组件内容属性是否发生变化
         watch(state.styleData,(newValue)=>{
             // 判断有无选中组件，没有则改变的是整个页面
             lastfocus.value?changeStyle((lastfocus.value as { id: string }).id, newValue):changeStyle("", newValue)

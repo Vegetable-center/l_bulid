@@ -29,14 +29,6 @@ const userData =defineStore('editorData',{
             // 获取最后一个点击聚焦元素
             this.lastfocus = newData
         },
-        // addData(newData:any){
-        //     (this.containerBlocks as any[]).push(newData);
-        // },
-        // clearFocus(){
-        //     this.containerBlocks.map(block => {
-        //         (block as {focus:boolean}).focus=false;
-        //     })
-        // },
         update(newData:any){
             this.containerBlocks=newData;
         }

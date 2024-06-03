@@ -6,7 +6,6 @@ import emit from "../declare/Event";
 export default defineComponent({
     props:['modelValue'],
     // 在这里实现了拖拽子组件进入容器容器会行进渲染
-    // 实现的原理为：通过son属性的变化，引起页面的重新渲染，页面重新渲染会让新的son传入到该组件中，实现响应式
     setup(props){
         const useStore=userData();
         const useContainer=containerData();
