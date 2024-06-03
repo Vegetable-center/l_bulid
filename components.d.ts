@@ -7,11 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Container: typeof import('./src/components/Container.vue')['default']
     DCard: typeof import('./src/components/DCard.vue')['default']
     DCarousel: typeof import('./src/components/DCarousel.vue')['default']
     DForm: typeof import('./src/components/DForm.vue')['default']
     DMenu: typeof import('./src/components/DMenu.vue')['default']
-    EditorAll: typeof import('./src/components/editorAll.vue')['default']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
@@ -23,5 +23,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Test: typeof import('./src/components/test.vue')['default']
+    Test01: typeof import('./src/components/test01.vue')['default']
+    Test02: typeof import('./src/components/test02.vue')['default']
   }
 }

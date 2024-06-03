@@ -14,8 +14,8 @@ export default defineComponent({
                 {/* <div class="rightTitle">右侧控制台</div> */}
                 <ElTabs v-model={activeName.value} class="demo-tabs">
                   <ElTabPane label="Props" name="first">
-                <BlockOperate></BlockOperate>
-                </ElTabPane>
+                    <BlockOperate></BlockOperate>
+                  </ElTabPane>
                   <ElTabPane label="Styles" name="second">
                     <StyleOperate></StyleOperate>
                   </ElTabPane>

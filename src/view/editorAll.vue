@@ -33,10 +33,10 @@
         
         },
         components:{
-            EditorLeft,
-            EditorRight,
-            EditorTop,
-            EditorContent,
+          EditorLeft,
+          EditorRight,
+          EditorTop,
+          EditorContent, 
         }
     }
 </script>
@@ -68,6 +68,19 @@
     border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0px 5px 20px rgba(0,0,0,.3);
     background-color: white;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .left::-webkit-scrollbar {
+    width: 3px;
+  }
+  .left::-webkit-scrollbar-track{
+    background-color: #fff;
+    border-radius: 2px;
+  }
+  .left::-webkit-scrollbar-thumb {
+    background-color: #a4a4a649;
+    border-radius: 10px;
   }
   .right {
     transition: all 1s;
@@ -105,9 +118,9 @@
 }
 /* 页面中容器组件的样式 */
 .container {
-  display: flex;
+  /*display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center;*/
   border: 1px solid #7d7d7d4e;
 }
 </style>

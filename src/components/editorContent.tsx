@@ -5,7 +5,7 @@ import '../style/editorContent.scss';
 import { userData , containerData} from "../stores";
 import { registerConfig as config } from "./blocksConfig";
 import { storeToRefs } from "pinia";
-import { cloneDeep } from "lodash";
+import { cloneDeep, find } from "lodash";
 
 export default defineComponent({
     props:{
@@ -53,15 +53,6 @@ export default defineComponent({
         const containerStyle = computed(() => ({
             height:container.height+'px'
         }))
-        // 计算属性，计算被选中的组件有多少个
-        const focusComponent = computed(() => {
-            let focus:Array<any>=[];
-            let unfocus:Array<any>=[];
-            containerBlocks.value.forEach(block => {
-                ((block as {focus:boolean}).focus?focus:unfocus).push(block);
-            })
-            return {focus,unfocus}
-        })
 
         // 实现清空页面选中元素的函数
         const clear =() => {
@@ -73,19 +64,24 @@ export default defineComponent({
         const componentMousedown =(e:MouseEvent,block:any) => {
             // e.preventDefault();
             e.stopPropagation();
-            if(e.shiftKey){
-                block.focus=!block.focus;
-                useStore.changeLastFocus(block)
-            }
-            else {
-                if(!block.focus){
-                    clear();
-                    block.focus=true;
+            // 获取到最外层的comBox盒子
+            const ele=findcom((e.target as HTMLElement));
+            // 判断点击到的最外层盒子的父元素是不是容器组件
+            if(!(ele.parentElement as HTMLElement).classList.contains('container')){
+                if(e.shiftKey){
+                    block.focus=!block.focus;
                     useStore.changeLastFocus(block)
-                    
                 }
                 else {
-                    block.focus=false;
+                    if(!block.focus){
+                        clear();
+                        block.focus=true;
+                        useStore.changeLastFocus(block);
+                    }
+                    else {
+                        block.focus=false;
+                    }
+    
                 }
             }
         }
@@ -141,6 +137,18 @@ export default defineComponent({
             }
         }
 
+        // 定义两个个鼠标滑动预选效果的函数
+        const mouseenter = (e:MouseEvent) => {
+            if(!(e.target as HTMLElement).classList.contains('componentDisplay')){
+                (e.target as HTMLElement).classList.add('preSelect');
+            }
+        }
+        const mouseleave = (e:MouseEvent) => {
+            if((e.target as HTMLElement).classList.contains('preSelect')){
+                (e.target as HTMLElement).classList.remove('preSelect');
+            }
+        }
+
         const dragstart =(e:DragEvent) => {
             e.stopPropagation();
             // 在拖拽开始的时候记录下拖拽替换前的编辑器中的组件列表，发送到Command文件中，方便撤回操作
@@ -162,12 +170,14 @@ export default defineComponent({
             // 当拖拽的组件是编辑器中的组件时调用函数
             if(flag=='inDrag'){
                 e.stopPropagation();
-                const index = (e.target as HTMLElement).parentElement!.getAttribute('index');
+                const target=findcom((e.target as HTMLElement));
+                const index =target.getAttribute('index');
                 if(index){
                     numIndex=parseInt(index);
                     if(dragIndex!==numIndex){
                         // 这里需要获取编辑器中组件列表,注意这里要将编辑器中的组件列表做一个深拷贝
                         newList=cloneDeep(containerBlocks.value);
+                        console.log(newList)
                         const source=newList[dragIndex];
                         newList.splice(dragIndex,1);
                         newList.splice(numIndex,0,source);
@@ -182,8 +192,8 @@ export default defineComponent({
         const dragleave = (e:DragEvent) => {
             e.stopPropagation();
             // 离开当前组件的时候将该组件显示的辅助线删除
-            const test=(e.target as HTMLElement).parentElement!;
-            clearline(test);
+            const target=findcom((e.target as HTMLElement))
+            clearline(target);
         }
 
         //左侧组件库中拖拽到已有组件上可以随意插入
@@ -191,23 +201,16 @@ export default defineComponent({
             if(flag=="inDrag"){
                 e.preventDefault();
                 e.dataTransfer!.dropEffect='move';
-                // 获得被覆盖元素的宽高，这里通过的是类名comBox进行辨别是否是编辑器中最外面一层的盒子，此时组件较为简单，不需要comBox的分辨，后续需要这部分的代码进行完善
-                const eparent=(e.target as HTMLElement).parentElement;
-                // 这里做的是编辑器中拖拽开始的辅助线的添加
-                if(eparent?.classList.contains('comBox')){
-                    const index=parseInt((e.target as HTMLElement).parentElement!.getAttribute('index')!);
-                    // console.log('此时被覆盖的元素的index为：'+index)
-                    addline(eparent,dragIndex,index);
-                }
-                // 这做的是页面中经过按钮的特殊处理
-                else if(eparent?.className=='el-button'){
-                    const index=parseInt((e.target as HTMLElement).parentElement?.parentElement!.getAttribute('index')!);
-                    const com=findcom(eparent);
-                    addline(com,dragIndex,index);
-                }
+                // 通过递归函数找到最外层中的index
+                const target=findcom((e.target as HTMLElement));
+                const index=parseInt(target.getAttribute('index')!);
+                // 给找到的最外层的盒子添加辅助线
+                addline(target,dragIndex,index);
             } 
         }
+
         const dragend = (e:DragEvent) => {
+            // console.log(newList);
             // 将拖拽完成之后的编辑器的组件列表发送到Command文件中，方便前进操作
             emit.emit('update',newList);
             //编辑器中的组件拖拽松手，更新数据，重新渲染页面
@@ -221,28 +224,48 @@ export default defineComponent({
                 clearline(line);
             })
         } 
+        // 如果做容器中的组件的拖拽的话，就需要做到判断拖拽停止的元素是什么
         const drop= (e:DragEvent) => {
             // 判断的flag是最上面接收到的flag
             if(flag!='inDrag'){
-                console.log("drop:"+id);
-                
-                //此时组件拖拽完成，给pinia仓库中添加一条新的数据
-                useContainer.addData({
-                    //标记组件是否被选中
-                    focus:false,
-                    //标记组件是什么类型，要怎么渲染
-                    key:id,
-                    //标记组件是行内元素还是块元素
-                    display:display,
-                    //标记组件是编辑器中第几个组件
-                    index:index,
-                    id:new Date().getTime(),  //时间戳id 方便获取元素
-                    props:{},
-                    model:{},
-                    styleContent:{}
-                })
-                //更新此时编辑器中有多少个组件,0即为1个
-                index++;
+                // console.log("此时在哪一个元素中松手：");
+                // console.log((e.target as HTMLElement));
+                // 进入到容器组件中，该组件添加到容器组件中去
+                if((e.target as HTMLElement).getAttribute('id')=='container'&&(e.target as HTMLElement).parentElement!.classList.contains('componentDisplay')){
+                    const newData={
+                        focus:false,
+                        key:id,
+                        display:display,
+                        id:new Date().getTime(),
+                        props:{},
+                        model:{},
+                        styleContent:{},
+                        son:[]
+                    }
+                    // console.log(e.target)
+                    useStore.addSon(newData);
+                }
+                else {
+                    //此时组件拖拽完成，给pinia仓库中添加一条新的数据
+                    useContainer.addData({
+                        //标记组件是否被选中
+                        focus:false,
+                        //标记组件是什么类型，要怎么渲染
+                        key:id,
+                        //标记组件是行内元素还是块元素
+                        display:display,
+                        //标记组件是编辑器中第几个组件
+                        index:index,
+                        id:new Date().getTime(),  //时间戳id 方便获取元素
+                        props:{},
+                        model:{},
+                        styleContent:{},
+                        // 新增一个该组件中子组件数组
+                        son:[]
+                    })
+                    //更新此时编辑器中有多少个组件,0即为1个
+                    index++;
+                }
                 //记录此时最新的状态，将该最新状态通过事件发射器，发送给Command文件中，方便撤回操作
                 const newState=cloneDeep(containerBlocks.value);
                 emit.emit('update',newState);
@@ -255,15 +278,13 @@ export default defineComponent({
                         {
                             (containerBlocks.value.map((block:block) => {
                                 const component=config.componentMap[block.key];
-                                console.log("imggg:"+JSON.stringify((block as {props:Object}).props));
-                                console.log(block.key);
-                                
+                                // console.log("imggg:"+JSON.stringify((block as {props:Object}).props));
+                                // console.log(block.key);
                                 const renderComponet=component.render({
                                     props:(block as {props:Object}).props,
                                     model:Object.keys(block.model||{}).reduce((prev,modelName)=>{
-                                        console.log(modelName);
-                                        console.log("prev:"+JSON.stringify(prev));
-                                        
+                                        // console.log(modelName);
+                                        // console.log("prev:"+JSON.stringify(prev));
                                         let propName=block.model[modelName]  //"username"
                                         prev[modelName]={
                                             modelValue:props.formData?.[propName],
@@ -275,6 +296,7 @@ export default defineComponent({
                                         return prev;
                                     },{} as { [key: string]: { modelValue: any; "update:modelValue": (v: any) => void } }),
                                     styleContent:block.styleContent!,
+                                    son:block.son,
                                 });
                                 const classMo=['comBox'];
                                 if((block as {focus:boolean}).focus){
@@ -293,6 +315,8 @@ export default defineComponent({
                                     ondragenter={dragenter}
                                     ondragover={dragover}
                                     ondragend={dragend}
+                                    onMouseenter={mouseenter}
+                                    onMouseleave={mouseleave}
                                  >
                                     {renderComponet}
                                 </div>

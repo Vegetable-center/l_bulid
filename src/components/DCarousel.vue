@@ -1,5 +1,5 @@
 <template>
-<ElCarousel trigger="click" :style="{height:height+'px',width:width+'px'}">
+<ElCarousel trigger="click" :style="{height:height+'px'}">
     <!-- 还没传入图片链接时 -->
     <template v-if="NoPic">
       <ElCarouselItem v-for="index in 2" :key="index">  
@@ -27,12 +27,12 @@ export default {
     },
     setup(props){
         const arr=computed(()=>props.num.length?props.num:[1, 2])
-        const width=500;
+        // const width=500;
         const height=200;
         const NoPic=computed(()=>!props.num.length);
         return{
             arr,
-            width,
+            // width,
             height,
             NoPic
         }

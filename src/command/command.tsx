@@ -135,7 +135,7 @@ export function useCommand() {
                     const right=document.querySelector('.right');
                     (left as HTMLElement).style.left='-15%';
                     (right as HTMLElement).style.right='-15%';
-                    console.log("此时执行了预览函数");
+                    emit.emit('preview','preview')
                     setTimeout(() => {
                         router.push('/preview')
                     }, 1000);

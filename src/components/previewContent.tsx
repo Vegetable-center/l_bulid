@@ -37,6 +37,7 @@ export default defineComponent({
                             return prev;
                         },{} as { [key: string]: { modelValue: any; "update:modelValue": (v: any) => void } }),
                         styleContent:block.styleContent!,
+                        son:block.son,
                     });
                     const classMo=[''];
                     if(!(block as {display:boolean}).display){

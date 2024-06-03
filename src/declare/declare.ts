@@ -6,6 +6,9 @@ declare namespace JSX {
         // 如果需要使用其他内置元素，也可以在这里进行类似的定义
         span:any;
         i:any;
+        [x:string]:string;
+    }
+    interface IntrinsicElements {
     }
 }
 type Model={
@@ -42,10 +45,11 @@ type Component = {
     label: string;
     componentType:string,
     preview: () => JSX.IntrinsicElements;
-    render: ({model,props,styleContent}:{model?:any,props:Props,styleContent:StyleContent}) => JSX.IntrinsicElements;
-    key: string;
+    render: ({model,props,styleContent,son}:{model?:any,props?:Props,styleContent?:StyleContent,son?:Object}) => JSX.IntrinsicElements;
+    key: string,
+    display?:boolean,
     model?:Model,
-    props?:Props
+    props?:Props,
 };
 //左侧组件库中的组件对象的声明
 type block = {
@@ -59,7 +63,8 @@ type block = {
     model?:any,
     display?:boolean,
     index?:number,
-    styleContent?:StyleContent
+    styleContent?:StyleContent,
+    son?:Object,
 };
 declare module 'blockComponet' {
     export default Component;
@@ -68,13 +73,26 @@ declare module 'block' {
     export default block;
 }
 
+// // 这里我们通过扩展全局的 vue 模块来添加 JSX 类型声明
+// declare module 'vue' {
+//     interface HTMLAttributes {
+//       customAttribute?: string;
+//     }
+// }
+
+//解决DCarousel报错：找不到调用签名的问题
 declare module '*.vue' {
-    import { ComponentOptions } from 'vue'
-    const componentOptions: ComponentOptions
-    export default componentOptions
-  }
-
-
+    import { defineComponent, HTMLAttributes } from 'vue'
+    const component: ReturnType<typeof defineComponent> & {
+        customAttribute?: string;
+    }
+    export default component
+}
+// declare module '*.vue' {
+//     import { ComponentOptions } from 'vue'
+//     const componentOptions: ComponentOptions
+//     export default componentOptions
+// }
 
 
 

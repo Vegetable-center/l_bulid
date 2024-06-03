@@ -21,20 +21,25 @@
 
 //选中元素出现选中方框的css样式
 .componentDisplay {
-    position: relative;
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border: 1px dashed red;
-    }
+    // position: relative;
+    // &::after {
+    //     content: '';
+    //     position: absolute;
+    //     top: 0;
+    //     bottom: 0;
+    //     left: 0;
+    //     right: 0;
+    //     border: 1px dashed red;
+    // }
+    border: 2px solid red;
 }
 //编辑器中元素是行内元素的样式
 .inline {
     display: inline-block;
+    vertical-align: top;
+}
+.preSelect {
+    border: 2px dashed rgb(242, 173, 173);
 }
 
 // 拖拽元素辅助线的css样式
