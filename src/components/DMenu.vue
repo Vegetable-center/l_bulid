@@ -1,5 +1,5 @@
 <template>
-<ElMenu v-if="!hasLink" :default-active="activeIndex" @Select="handleSelect" mode="horizontal" :style="{width: '500px' }">
+<ElMenu v-if="!hasLink" :default-active="activeIndex" @Select="handleSelect" mode="horizontal" :style="{width: '100%' }">
     <el-menu-item index="1">首页</el-menu-item>
     <el-menu-item index="2">Info</el-menu-item>
     <el-menu-item index="3">Info</el-menu-item>
@@ -28,8 +28,6 @@ export default {
         }
     },
     setup(props){
-        console.log(JSON.stringify(props.linkTit));
-        console.log(props.link);
         
         const activeIndex = ref('1')
         const hasLink=computed(()=>props.linkTit.length>0)

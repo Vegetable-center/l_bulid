@@ -38,6 +38,7 @@ registerConfig.register({
     render:({son}) => <Container id='container' class="container" style="height:320px;" v-model={son}></Container>,
     key:'container',
     display:true,
+    container:true,
 })
 registerConfig.register({
     label:'文本',
@@ -161,10 +162,11 @@ registerConfig.register({
 registerConfig.register({
     label:'卡片',
     componentType:"big",
-    preview:() => <ElCard display='false' shadow="always">预览卡片</ElCard>,
-    render:({ props}) => <DCard id="card" text={(props as {text:string}).text} type={(props as {type:string}).type}></DCard>,
-    key:'card',
+    preview:() => <ElCard id="container" display='false' shadow="always">预览卡片</ElCard>,
+    render:({ props,son}) => <DCard id="card" son={son} text={(props as {text:string}).text} type={(props as {type:string}).type}></DCard>,
+    key:'container',
     display:false,
+    container:true,
     props: {
         text:createInputProp('卡片内容'),
         type:createSelectProp('阴影类型',[

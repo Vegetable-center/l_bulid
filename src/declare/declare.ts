@@ -48,6 +48,7 @@ type Component = {
     render: ({model,props,styleContent,son}:{model?:any,props?:Props,styleContent?:StyleContent,son?:Object}) => JSX.IntrinsicElements;
     key: string,
     display?:boolean,
+    container?:boolean,
     model?:Model,
     props?:Props,
 };
@@ -62,6 +63,7 @@ type block = {
     props?:Props,
     model?:any,
     display?:boolean,
+    container?:boolean,
     index?:number,
     styleContent?:StyleContent,
     son?:Object,

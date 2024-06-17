@@ -39,6 +39,8 @@ export default defineComponent({
 
         watch(state.styleData,(newValue)=>{
             // 判断有无选中组件，没有则改变的是整个页面
+            console.log("listen"+JSON.stringify(lastfocus.value));
+            
             lastfocus.value?changeStyle((lastfocus.value as { id: string }).id, newValue):changeStyle("", newValue)
         })
         

@@ -15,6 +15,7 @@
     import EditorTop from '../components/editorTop'
     import EditorContent from '../components/editorContent'
     import { reactive } from 'vue'
+    import data from '../data.json'
     export default {
         props:{
             modelValue:{
@@ -23,9 +24,7 @@
             }
         },
         setup() {
-          const formData=reactive({
-            username:'张三',
-          })
+          const {formData}=data
 
           return{
             formData

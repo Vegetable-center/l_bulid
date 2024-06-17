@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import data from '../data.json'
-import { update } from "lodash";
+import { map, update } from "lodash";
 
 // 指的是编辑器的css样式
 const {container} = data
@@ -10,20 +10,24 @@ const {smallBlocks} = data
 const {bigBlocks} = data
 //指的是在编辑器中渲染的组件
 const {containerBlocks,lastfocus} = data
-
-const userData =defineStore('editorData',{
+let containerMap=new Map()
+const userData =defineStore('editorData',{ //usestore
     state:() => {
         return {
             container,
             smallBlocks,
             bigBlocks,
             containerBlocks,
-            lastfocus
+            lastfocus,
+            containerMap
         }
     },
     actions: {
-        addSon(newData:any){
-            (this.lastfocus as any).son.push(newData);
+        addSon(containerIndex:number,newData:any){
+            // 给对应的容器组件添加子组件
+            (this.containerBlocks[containerIndex] as {son:any}).son.push(newData);
+            console.log("adddd:"+JSON.stringify(this.containerBlocks));
+            
         },
         changeLastFocus(newData: any) {
             // 获取最后一个点击聚焦元素
@@ -31,10 +35,12 @@ const userData =defineStore('editorData',{
         },
         update(newData:any){
             this.containerBlocks=newData;
+            console.log("upppp:"+JSON.stringify(this.containerBlocks));
+
         }
     }
 })
-const containerData = defineStore('containerData', {
+const containerData = defineStore('containerData', { //useContaier
     state: () => {
         return {
             containerBlocks,
@@ -55,7 +61,7 @@ const containerData = defineStore('containerData', {
         clearFocus() {
             this.containerBlocks.map(block => {
                 (block as { focus: boolean }).focus = false;
-                if((block as { key: string }).key=='container'){
+                if((block as { key: string }).key==='container'){
                     const sonArr=(block as {son:Array<any>}).son
                     // son数组有长度说明有子组件，清除子组件中的选中
                     if(sonArr.length){
@@ -65,6 +71,8 @@ const containerData = defineStore('containerData', {
                     }
                 }
             })
+            console.log("clear:"+JSON.stringify(this.containerBlocks));
+            
         },
         // 这里是更新页面组件位置的方法
         update(newData:any){
@@ -92,6 +100,7 @@ const containerData = defineStore('containerData', {
                         ...((this.containerBlocks[dataIdx] as {son:Array<any>}).son[sonidx] as { props: Object }).props,
                         ...(newData as { props: Object }).props
                     };
+                    ((this.containerBlocks[dataIdx] as {son:Array<any>}).son[sonidx] as { model: Object }).model = (newData as { model: Object }).model ?? {} as Model;
                 }
                 else{
                     (this.containerBlocks[dataIdx] as { props: Object }).props = {
@@ -118,7 +127,7 @@ const containerData = defineStore('containerData', {
 
             if (id) {
                 // 选中的为组件
-                let dataIdx = this.containerBlocks.findIndex((item) => (item as { id: string }).id === id);
+                let dataIdx = this.containerBlocks.findIndex((item) => (item as { id: string }).id === id); //点击的组件在整个画布上找得到id，说明是画布上的组件，而不是容器组件的子组件
                 const ctaArr=this.containerBlocks.filter((item) => (item as {key:string}).key==='container');
                 if(dataIdx==-1){
                     let sonidx:any;

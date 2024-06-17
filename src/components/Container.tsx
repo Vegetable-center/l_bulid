@@ -2,14 +2,20 @@ import { defineComponent, ref } from "vue";
 import { registerConfig as config } from "./blocksConfig";
 import { containerData,userData } from "../stores";
 import emit from "../declare/Event";
-
+import data from '../data.json';
+// import {drop,dragstart} from './editorContent'
 export default defineComponent({
-    props:['modelValue'],
-    // 在这里实现了拖拽子组件进入容器容器会行进渲染
+    props:{
+        modelValue:{
+            type:Array,
+            default:()=>[]
+        }
+    },
+    // 在这里实现了拖拽子组件进入容器 会进行渲染
     setup(props){
+        const {formData}=data
         const useStore=userData();
         const useContainer=containerData();
-
         const sondata=ref(props.modelValue);
         let isPre:string='editor';
         emit.on('preview',(message) => {
@@ -21,6 +27,7 @@ export default defineComponent({
             useStore.changeLastFocus({})
         }
         const down=(e:MouseEvent,block:block) => {
+            e.stopPropagation()
             if(!block.focus){
                 clear();
                 block.focus=true;
@@ -42,13 +49,14 @@ export default defineComponent({
             }
         }
         return {
+            formData,
             sondata,
             down,
             mouseenter,
             mouseleave
         }
     },
-    render(){
+    render(formData: { [x: string]: string; }){
         const strSondata=JSON.stringify(this.sondata)
         let result:any="渲染的容器";
         if(strSondata!=='[]'){
@@ -57,6 +65,19 @@ export default defineComponent({
                 const component=config.componentMap[block.key];
                 const renderComponet=component.render({
                     props:(block as {props:Object}).props,
+                    model: Object.keys(block.model || {}).reduce((prev, modelName) => {
+                        let propName = block.model[modelName]  //"username"
+                        console.log("opp:"+propName);
+                        
+                        prev[modelName] = {
+                            modelValue: formData[propName],
+                            "update:modelValue": (v: string) => {
+                                if (formData) {formData[propName] = v }
+                            }
+                        }
+                        return prev;
+                    }, {} as { [key: string]: { modelValue: any; "update:modelValue": (v: any) => void } }),
+                    
                     styleContent:block.styleContent!,
                     son:block.son,
                 });

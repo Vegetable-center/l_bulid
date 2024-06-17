@@ -73,7 +73,9 @@ export default defineComponent({
             //获取拖拽元素的id，将id通过事件发射器发送到editorContent文件中，进行组件添加
             const id = (e.target as HTMLElement).getAttribute('id');
             const display = (e.target as HTMLElement).getAttribute('display');
-            // console.log("idL:"+JSON.stringify((e.target as HTMLElement)!.firstElementChild));
+            console.log("display:"+JSON.stringify(e.target));
+            console.log("id:"+id);
+            
             // 发送要进行渲染的数据到editorContent文件中
             emit.emit('addComponent',{
                 id,
@@ -86,7 +88,6 @@ export default defineComponent({
             emit.emit('record',oldState);
         }
         return ()=> {
-            // console.log(smallBlock6s)
             return <div>
                 <div class="moveBox">
                     <div class="bt" onClick={btClick}>
